@@ -4,6 +4,7 @@ pygame.init()
 
 BACKGROUND_COLOR = (0,0,0)
 PRIMARY_COLOR = (255,255,255)
+ENEMY_COLOR = (255,0,0)
 
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
@@ -21,12 +22,25 @@ PLAYER_WIDTH = 25
 PLAYER_HEIGHT = 25
 player_rect = pygame.Rect(playerx, playery, PLAYER_WIDTH, PLAYER_HEIGHT)
 
+#enemy setup
+
+enemyx = 0
+enemyy = 0
+ENEMY_WIDTH = 18
+ENEMY_HEIGHT = 18
+enemy_rect = pygame.Rect(playerx, playery, PLAYER_WIDTH, PLAYER_HEIGHT)
+
 holdingA = False
 holdingW = False
 holdingD = False
 holdingS = False
 
 speed = 1.5
+
+#functions
+
+#def enemy_pathfinding(playerx, playery, enemyx, enemyy, enemySpeed):
+
 
 while True:
     for event in pygame.event.get():
@@ -71,10 +85,12 @@ while True:
         speed = 1
     
     player_rect = pygame.Rect(playerx, playery, PLAYER_WIDTH, PLAYER_HEIGHT)
+    enemy_rect = pygame.Rect(enemyx, enemyy, ENEMY_WIDTH, ENEMY_HEIGHT)
 
     screen.fill(BACKGROUND_COLOR)
 
     pygame.draw.rect(screen, PRIMARY_COLOR, player_rect)
+    pygame.draw.rect(screen, ENEMY_COLOR, enemy_rect)
 
     pygame.display.flip()
 
