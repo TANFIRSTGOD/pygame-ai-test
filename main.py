@@ -1,4 +1,5 @@
 import pygame
+import enemy
 
 pygame.init()
 
@@ -28,23 +29,28 @@ enemyx = 0
 enemyy = 0
 ENEMY_WIDTH = 18
 ENEMY_HEIGHT = 18
-enemy_rect = pygame.Rect(playerx, playery, PLAYER_WIDTH, PLAYER_HEIGHT)
+
+enemySpeed = 1
+
+enemy_rect = pygame.Rect(enemyx, enemyy, PLAYER_WIDTH, PLAYER_HEIGHT)
+
+#enemy2 setup
+
+enemyx2 = 800
+enemyy2 = 0
+
+enemy_rect2 = pygame.Rect(enemyx2, enemyy2, PLAYER_WIDTH, PLAYER_HEIGHT)
 
 holdingA = False
 holdingW = False
 holdingD = False
 holdingS = False
 
-speed = 1.5
-
-#functions
-
-#def enemy_pathfinding(playerx, playery, enemyx, enemyy, enemySpeed):
-
+speed = 2
 
 while True:
     for event in pygame.event.get():
-        if event == pygame.QUIT:
+        if event.type == pygame.QUIT:
             pygame.quit()
             raise SystemExit
         elif event.type == pygame.KEYDOWN:
@@ -79,18 +85,33 @@ while True:
     if holdingS:
         playery += speed
         
-    if holdingA and holdingD or holdingW and holdingS:
-        speed /= 1.414
+    if holdingW and holdingD or holdingW and holdingA or holdingS and holdingD or holdingS and holdingA:
+        speed = 1.25
     else:
-        speed = 1
+        speed = 2
     
+    #enemy update
+
+    enemyx = enemy.trackTarget(enemyx, enemyy, enemySpeed, playerx, playery)[0]
+    enemyy = enemy.trackTarget(enemyx, enemyy, enemySpeed, playerx, playery)[1]
+
+    enemyx2 = enemy.trackTarget(enemyx2, enemyy2, enemySpeed, playerx, playery)[0]
+    enemyy2 = enemy.trackTarget(enemyx2, enemyy2, enemySpeed, playerx, playery)[1]
+
     player_rect = pygame.Rect(playerx, playery, PLAYER_WIDTH, PLAYER_HEIGHT)
     enemy_rect = pygame.Rect(enemyx, enemyy, ENEMY_WIDTH, ENEMY_HEIGHT)
+    enemy_rect2 = pygame.Rect(enemyx2, enemyy2, ENEMY_WIDTH, ENEMY_HEIGHT)
+
+    #update collisions
+
+    if player_rect.colliderect(enemy_rect) or player_rect.colliderect(enemy_rect2):
+        PRIMARY_COLOR = (255,0,0)
 
     screen.fill(BACKGROUND_COLOR)
 
     pygame.draw.rect(screen, PRIMARY_COLOR, player_rect)
     pygame.draw.rect(screen, ENEMY_COLOR, enemy_rect)
+    pygame.draw.rect(screen, ENEMY_COLOR, enemy_rect2)
 
     pygame.display.flip()
 
