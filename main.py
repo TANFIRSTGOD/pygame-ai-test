@@ -106,6 +106,8 @@ while True:
 
     if player_rect.colliderect(enemy_rect) or player_rect.colliderect(enemy_rect2):
         PRIMARY_COLOR = (255,0,0)
+    else:
+        PRIMARY_COLOR = (255,255,255)
 
     screen.fill(BACKGROUND_COLOR)
 
